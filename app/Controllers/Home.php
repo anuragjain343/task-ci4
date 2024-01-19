@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Controllers;
+use CodeIgniter\Controller;
 use App\Models\UserModel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class Home extends BaseController
 {
     public function index(): string{
@@ -214,5 +217,45 @@ class Home extends BaseController
      public function forgotPassword(): string{
         return view('forgotPassword');
     }
+
+    public function expoertData(): string{
+
+       $user = new UserModel();
+       $result = $user->where('email', 'anuragjain343@gmail.com')->first(); 
+       //print_r($result); die();
+      /*$db      = \Config\Database::connect();
+      $builder = $db->table('users');   
+
+      $query = $builder->query("SELECT * FROM users");
+
+      $users = $query->getResult();*/
+      
+      $fileName = 'users1.xlsx';  
+      $spreadsheet = new Spreadsheet();
+
+      $sheet = $spreadsheet->getActiveSheet();
+      $sheet->setCellValue('A1', 'Id');
+      $sheet->setCellValue('B1', 'Name');
+      $sheet->setCellValue('C1', 'Email');
+      $sheet->setCellValue('D1', 'Profile');
+      $sheet->setCellValue('E1', 'DOB');
+     
+      $rows = 2;
+
+     // foreach ($users as $val){
+          $sheet->setCellValue('A' . $rows, $result['id']);
+          $sheet->setCellValue('B' . $rows, $result['firstName']);
+          $sheet->setCellValue('C' . $rows, $result['email']);
+          $sheet->setCellValue('D' . $rows, $result['profilePic']);
+          $sheet->setCellValue('E' . $rows, $result['dob']);
+          $rows++;
+      //} 
+      $writer = new Xlsx($spreadsheet);
+      $writer->save("../public/uploads/".$fileName);
+      header("Content-Type: application/vnd.ms-excel");
+      base_url()."/upload/".$fileName;
+      redirect('/deshboard'); 
+  }
+    
     
 }

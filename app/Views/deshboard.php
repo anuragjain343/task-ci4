@@ -27,6 +27,11 @@
                     <i class="fa fa-sign-out-alt fa-2x"></i>
                 </a>
             </li>
+            <li>
+                <a href="<?php echo base_url('/expoertData');?>">
+                    <i class="fa fa-sign-out-alt fa-2x"></i>
+                </a>
+            </li>
         </ul>
         <!-- End -->
     </div>
